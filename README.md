@@ -1,12 +1,38 @@
-# React + Vite
+# Smart Display
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack digital signage and announcement management system built with React and Vite.
 
-Currently, two official plugins are available:
+## Project Goals
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Display announcements on a TV or monitor.
+- Build an administrator dashboard.
+- Add and manage announcements.
+- Integrate a backend API and database.
+- Learn full-stack development step by step.
 
-## Expanding the ESLint configuration
+## Technologies
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React
+- Vite
+- JavaScript
+- CSS
+- Node.js and Express (planned)
+- MongoDB (planned)
+
+## Getting Started
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+## Status
+
+Currently building the frontend and learning full-stack development.
