@@ -5,6 +5,16 @@ function App() {
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState(false);
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, []);
+
   useEffect(() => {
     async function getWeather() {
       try {
@@ -65,9 +75,28 @@ function App() {
           <p>Company Information Center</p>
         </div>
 
-        <div className="status">
-          <span className="status-dot"></span>
-          System Online
+        <div className="header-right">
+          <div className="clock">
+            {currentTime.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            })}
+          </div>
+
+          <div className="date">
+            {currentTime.toLocaleDateString("en-US", {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </div>
+
+          <div className="status">
+            <span className="status-dot"></span>
+            System Online
+          </div>
         </div>
       </header>
 
