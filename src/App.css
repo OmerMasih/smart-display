@@ -1,3 +1,7 @@
+/* =================================
+   GLOBAL STYLES
+================================= */
+
 * {
   box-sizing: border-box;
 }
@@ -5,230 +9,587 @@
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: #e9eef5;
-  color: #172033;
+  background: #edf2f8;
+  color: #172b45;
+}
+
+button,
+input,
+select {
+  font: inherit;
 }
 
 .display {
+  width: 100%;
   min-height: 100vh;
-  padding: 32px;
+  padding: 26px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 22px;
 }
 
+/* =================================
+   HEADER
+================================= */
+
 .header {
-  background: #102b50;
+  background: linear-gradient(120deg, #071b36, #123d6b);
   color: white;
-  padding: 28px 32px;
+  padding: 25px 32px;
   border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  box-shadow: 0 8px 25px #102b501f;
 }
 
-.header h1 {
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #79b9f5;
+  border-radius: 14px;
+  color: white;
+  font-size: 21px;
+  font-weight: 800;
+  background: #ffffff12;
+}
+
+.brand h1 {
   margin: 0;
-  font-size: 36px;
+  font-size: 30px;
   letter-spacing: 2px;
 }
 
-.header p {
-  margin: 8px 0 0;
-  color: #cbd8eb;
+.brand p {
+  margin: 7px 0 0;
+  color: #c5d7ec;
+  font-size: 14px;
 }
 
-.status {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
-}
-
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #4ade80;
-}
-
-.announcements {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
-}
-
-.announcement {
-  min-height: 300px;
-  padding: 36px;
-  border-radius: 16px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-shadow: 0 8px 24px #17203318;
-}
-
-.announcement h2 {
-  font-size: 30px;
-  margin: 0 0 20px;
-}
-
-.announcement p {
-  font-size: 22px;
-  line-height: 1.6;
-}
-
-.announcement span {
-  margin-top: 16px;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.announcement-blue {
-  background: linear-gradient(135deg, #1261a0, #15345e);
-}
-
-.announcement-orange {
-  background: linear-gradient(135deg, #e87924, #a83b20);
-}
-
-.ticker {
-  background: white;
-  border-radius: 12px;
-  padding: 18px 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  box-shadow: 0 4px 16px #17203312;
-}
-
-.ticker strong {
-  color: #1261a0;
-  white-space: nowrap;
-}
-
-.ticker p {
-  margin: 0;
-}
-
-@media (max-width: 700px) {
-  .display {
-    padding: 16px;
-    gap: 16px;
-  }
-
-  .header {
-    padding: 22px;
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .header h1 {
-    font-size: 28px;
-  }
-
-  .announcements {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .announcement {
-    min-height: 240px;
-    padding: 24px;
-  }
-
-  .ticker {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 8px;
-  }
-}
-
-.weather-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 28px 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  box-shadow: 0 8px 24px #17203318;
-}
-
-.weather-location {
-  color: #1261a0;
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-}
-
-.weather-card h2 {
-  margin: 8px 0;
-  font-size: 25px;
-}
-
-.weather-description {
-  font-size: 18px;
-}
-
-.weather-temperature {
-  font-size: 42px;
-  font-weight: bold;
-  margin: 12px 0;
-}
-
-.weather-temperature span {
-  font-size: 15px;
-  font-weight: normal;
-  color: #64748b;
-}
-
-.weather-icon {
-  font-size: 76px;
-}
-
-.weather-credit {
-  font-size: 12px;
-  color: #64748b;
-}
-
-@media (max-width: 700px) {
-  .weather-card {
-    padding: 22px;
-  }
-
-  .weather-temperature {
-    font-size: 32px;
-  }
-
-  .weather-icon {
-    font-size: 48px;
-  }
-}
-
-.header-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
+.header-info {
+  text-align: right;
 }
 
 .clock {
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 30px;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
 .date {
-  color: #cbd8eb;
+  margin-top: 5px;
+  color: #c5d7ec;
+  font-size: 13px;
+}
+
+.system-status {
+  margin-top: 9px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #a9f2c0;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  background: #36d77d;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #36d77d;
+}
+
+/* =================================
+   ANNOUNCEMENT MANAGER
+================================= */
+
+.manager {
+  background: white;
+  border-radius: 15px;
+  padding: 24px;
+  box-shadow: 0 5px 20px #102b5010;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.eyebrow {
+  color: #347dbd;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.section-heading h2 {
+  margin: 7px 0;
+  font-size: 22px;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #718096;
+  font-size: 13px;
+}
+
+.announcement-count {
+  background: #e9f3ff;
+  color: #1763a4;
+  border-radius: 20px;
+  padding: 9px 15px;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.announcement-form {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.form-field label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #42546c;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px solid #dce5ef;
+  border-radius: 8px;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #287ac0;
+  box-shadow: 0 0 0 3px #287ac01a;
+}
+
+.add-button {
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  background: #1765a8;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.add-button:hover {
+  background: #0c477c;
+}
+
+/* =================================
+   ANNOUNCEMENT CARDS
+================================= */
+
+.announcements {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.announcement {
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 8px 24px #102b5018;
+}
+
+.information-card {
+  min-height: 290px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  background: linear-gradient(135deg, #176bb0, #102e53);
+}
+
+.announcement-label {
+  width: fit-content;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #ffffff20;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.announcement-content h2 {
+  font-size: 27px;
+  margin: 20px 0 10px;
+}
+
+.announcement-content p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.announcement-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #ffffff35;
+  color: #d4e8ff;
+  font-size: 11px;
+}
+
+/* =================================
+   SAFETY GIF - LANDSCAPE FRAME
+================================= */
+
+.safety-card {
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  background: #102b50;
+  isolation: isolate;
+}
+
+.safety-visual {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: #102b50;
+}
+
+.safety-backdrop {
+  position: absolute;
+  inset: -20px;
+  background-image: url("/safety-notice.gif");
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px) brightness(0.55);
+  transform: scale(1.08);
+}
+
+.safety-gif {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Delete button on GIF */
+.safety-card .delete-button {
+  position: absolute;
+  z-index: 3;
+  bottom: 12px;
+  left: 12px;
+}
+
+.delete-button {
+  background: #ffffffed;
+  color: #b42318;
+  border: none;
+  padding: 8px 13px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.delete-button:hover {
+  background: #fee2e2;
+  opacity: 1;
+}
+
+.information-card .delete-button {
+  align-self: flex-start;
+  margin-top: 20px;
+}
+
+/* =================================
+   WEATHER PANEL
+================================= */
+
+.weather-card {
+  min-height: 225px;
+  padding: 28px 35px;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #0c2c52, #1765a8);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  box-shadow: 0 8px 25px #102b5020;
+}
+
+.weather-left {
+  min-width: 0;
+}
+
+.weather-left .eyebrow {
+  color: #91caff;
+}
+
+.weather-left h2 {
+  margin: 8px 0;
+  font-size: 24px;
+}
+
+.weather-description {
+  color: #d6eaff;
+  font-size: 15px;
+  margin: 10px 0 0;
+}
+
+.temperature {
+  font-size: 58px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 8px 0;
+}
+
+.temperature span {
+  font-size: 30px;
+}
+
+.feels-like {
+  color: #c4d9f0;
+  margin: 0 0 15px;
+  font-size: 13px;
+}
+
+.weather-extra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  color: #e2efff;
+  font-size: 13px;
+}
+
+.weather-extra span {
+  color: #8cc6ff;
+  font-weight: bold;
+}
+
+.weather-credit {
+  font-size: 10px;
+  color: #a8c5e5;
+  margin: 17px 0 0;
+}
+
+.weather-error {
+  color: #ffe1a6;
+}
+
+.weather-visual {
+  width: 145px;
+  height: 145px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ffffff15;
+}
+
+.weather-icon {
+  font-size: 75px;
+}
+
+/* =================================
+   BOTTOM TICKER
+================================= */
+
+.ticker {
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  overflow: hidden;
+  background: #071b36;
+  border-radius: 10px;
+  color: white;
+}
+
+.ticker-label {
+  z-index: 2;
+  height: 58px;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  background: #e39a25;
+  color: #102b50;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ticker-window {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 35s linear infinite;
+}
+
+.ticker-track span {
+  flex-shrink: 0;
+  padding-left: 35px;
+  padding-right: 35px;
   font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+/* =================================
+   FOOTER
+================================= */
+
+.bottom-note {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #8091a6;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+/* =================================
+   RESPONSIVE DESIGN
+================================= */
+
+@media (max-width: 1000px) {
+  .announcement-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .add-button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 700px) {
-  .header-right {
+  .display {
+    padding: 12px;
+    gap: 15px;
+  }
+
+  .header {
+    padding: 20px;
     align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-info {
+    text-align: left;
+  }
+
+  .system-status {
+    justify-content: flex-start;
+  }
+
+  .brand h1 {
+    font-size: 23px;
+  }
+
+  .clock {
+    font-size: 26px;
+  }
+
+  .announcements {
+    grid-template-columns: 1fr;
+  }
+
+  .information-card {
+    min-height: 250px;
+    padding: 24px;
+  }
+
+  .safety-card {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .announcement-form {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-card {
+    padding: 22px;
+  }
+
+  .weather-visual {
+    width: 80px;
+    height: 80px;
+  }
+
+  .weather-icon {
+    font-size: 45px;
+  }
+
+  .weather-extra {
+    gap: 12px;
+  }
+
+  .ticker-label {
+    padding: 0 12px;
+    font-size: 10px;
   }
 }

@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  // Live clock
+  // Clock state
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  // Weather data
+  // Weather state
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState(false);
 
-  // Announcement data
+  // Announcement state
   const [announcements, setAnnouncements] = useState([
     {
       id: 1,
@@ -26,77 +26,92 @@ function App() {
     },
   ]);
 
-  // Form fields
+  // Form state
   const [newTitle, setNewTitle] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [newCategory, setNewCategory] = useState("General");
 
-  // Update clock every second
+  // Live clock
   useEffect(() => {
-    const timerId = setInterval(() => {
+    const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
-    return () => clearInterval(timerId);
+    return () => clearInterval(timer);
   }, []);
 
-  // Fetch weather and refresh every 15 minutes
+  // Weather API
   useEffect(() => {
+    let isMounted = true;
+
     async function getWeather() {
       try {
         const response = await fetch(
-          "https://api.open-meteo.com/v1/forecast?latitude=38.5816&longitude=-121.4944&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles"
+          "https://api.open-meteo.com/v1/forecast?latitude=38.5816&longitude=-121.4944&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles",
         );
 
         if (!response.ok) {
-          throw new Error("Weather request failed");
+          throw new Error(`Weather API error: ${response.status}`);
         }
 
         const data = await response.json();
-        setWeather(data);
-        setWeatherError(false);
+
+        if (isMounted) {
+          setWeather(data);
+          setWeatherError(false);
+        }
       } catch (error) {
-        console.error("Could not load weather:", error);
-        setWeatherError(true);
+        console.error("Weather error:", error);
+
+        if (isMounted) {
+          setWeatherError(true);
+        }
       }
     }
 
     getWeather();
 
-    const intervalId = setInterval(getWeather, 15 * 60 * 1000);
+    const weatherTimer = setInterval(getWeather, 15 * 60 * 1000);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      isMounted = false;
+      clearInterval(weatherTimer);
+    };
   }, []);
 
-  // Convert weather codes to descriptions
+  // Weather descriptions
   function getWeatherDescription(code) {
-    if (code === 0) return "Clear sky";
-    if ([1, 2].includes(code)) return "Partly cloudy";
+    if (code === 0) return "Clear Sky";
+    if ([1, 2].includes(code)) return "Partly Cloudy";
     if (code === 3) return "Overcast";
     if ([45, 48].includes(code)) return "Foggy";
     if ([51, 53, 55, 56, 57].includes(code)) return "Drizzle";
     if ([61, 63, 65, 66, 67].includes(code)) return "Rain";
     if ([71, 73, 75, 77].includes(code)) return "Snow";
-    if ([80, 81, 82].includes(code)) return "Rain showers";
-    if ([85, 86].includes(code)) return "Snow showers";
+    if ([80, 81, 82].includes(code)) return "Rain Showers";
+    if ([85, 86].includes(code)) return "Snow Showers";
     if ([95, 96, 99].includes(code)) return "Thunderstorm";
-    return "Conditions unavailable";
+
+    return "Conditions Unavailable";
   }
 
-  // Select a weather icon
+  // Weather icons
   function getWeatherIcon(code, isDay) {
     if ([95, 96, 99].includes(code)) return "⛈️";
+
     if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) {
       return "🌧️";
     }
+
     if ([71, 73, 75, 77, 85, 86].includes(code)) return "❄️";
     if ([45, 48].includes(code)) return "🌫️";
     if (code === 0) return isDay ? "☀️" : "🌙";
     if ([1, 2, 3].includes(code)) return "🌤️";
+
     return "🌡️";
   }
 
-  // Add an announcement
+  // Add announcement
   function handleAddAnnouncement(event) {
     event.preventDefault();
 
@@ -104,78 +119,84 @@ function App() {
       return;
     }
 
-    const newAnnouncement = {
+    const announcement = {
       id: Date.now(),
       title: newTitle.trim(),
       message: newMessage.trim(),
       category: newCategory,
     };
 
-    setAnnouncements((currentAnnouncements) => [
-      ...currentAnnouncements,
-      newAnnouncement,
-    ]);
+    setAnnouncements((previous) => [...previous, announcement]);
 
     setNewTitle("");
     setNewMessage("");
     setNewCategory("General");
   }
 
-  // Delete an announcement
+  // Delete announcement
   function handleDeleteAnnouncement(id) {
-    setAnnouncements((currentAnnouncements) =>
-      currentAnnouncements.filter((announcement) => announcement.id !== id)
-    );
+    setAnnouncements((previous) => previous.filter((item) => item.id !== id));
   }
+
+  const formattedDate = currentTime.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  const formattedTime = currentTime.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
 
   return (
     <main className="display">
-      {/* Header */}
+      {/* CORPORATE HEADER */}
       <header className="header">
-        <div>
-          <h1>SMART DISPLAY</h1>
-          <p>Company Information Center</p>
+        <div className="brand">
+          <div className="brand-icon">SD</div>
+
+          <div>
+            <h1>SMART DISPLAY</h1>
+            <p>Corporate Information Center</p>
+          </div>
         </div>
 
-        <div className="header-right">
-          <div className="clock">
-            {currentTime.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            })}
-          </div>
+        <div className="header-info">
+          <div className="clock">{formattedTime}</div>
+          <div className="date">{formattedDate}</div>
 
-          <div className="date">
-            {currentTime.toLocaleDateString("en-US", {
-              weekday: "long",
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </div>
-
-          <div className="status">
+          <div className="system-status">
             <span className="status-dot"></span>
             System Online
           </div>
         </div>
       </header>
 
-      {/* Announcement form */}
+      {/* ANNOUNCEMENT MANAGER */}
       <section className="manager">
-        <h2>Manage Announcements</h2>
-        <p className="manager-description">
-          Add notices to your digital display.
-        </p>
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">CONTENT MANAGEMENT</span>
+            <h2>Manage Announcements</h2>
+            <p>Add and manage messages displayed on your screen.</p>
+          </div>
 
-        <form onSubmit={handleAddAnnouncement} className="announcement-form">
+          <div className="announcement-count">
+            {announcements.length} Active
+          </div>
+        </div>
+
+        <form className="announcement-form" onSubmit={handleAddAnnouncement}>
           <div className="form-field">
-            <label htmlFor="announcement-title">Title</label>
+            <label htmlFor="title">Announcement Title</label>
+
             <input
-              id="announcement-title"
+              id="title"
               type="text"
-              placeholder="Enter announcement title"
+              placeholder="Enter a title"
               value={newTitle}
               onChange={(event) => setNewTitle(event.target.value)}
               required
@@ -183,21 +204,23 @@ function App() {
           </div>
 
           <div className="form-field">
-            <label htmlFor="announcement-message">Message</label>
-            <textarea
-              id="announcement-message"
-              placeholder="Enter your announcement message"
+            <label htmlFor="message">Message</label>
+
+            <input
+              id="message"
+              type="text"
+              placeholder="Enter announcement message"
               value={newMessage}
               onChange={(event) => setNewMessage(event.target.value)}
-              rows={3}
               required
             />
           </div>
 
           <div className="form-field">
-            <label htmlFor="announcement-category">Category</label>
+            <label htmlFor="category">Category</label>
+
             <select
-              id="announcement-category"
+              id="category"
               value={newCategory}
               onChange={(event) => setNewCategory(event.target.value)}
             >
@@ -214,48 +237,72 @@ function App() {
         </form>
       </section>
 
-      {/* Announcements shown on the display */}
+      {/* ANNOUNCEMENT DISPLAY */}
       <section className="announcements">
-        {announcements.map((announcement, index) => (
-          <article
-            className={`announcement ${
-              announcement.category === "Important" ||
-              announcement.category === "Safety"
-                ? "announcement-orange"
-                : "announcement-blue"
-            }`}
-            key={announcement.id}
-          >
-            <span className="announcement-category">
-              {announcement.category}
-            </span>
+        {announcements.map((announcement) => {
+          const isSafety =
+            announcement.category === "Important" ||
+            announcement.category === "Safety";
 
-            <h2>{announcement.title}</h2>
-            <p>{announcement.message}</p>
-
-            <button
-              className="delete-button"
-              type="button"
-              onClick={() => handleDeleteAnnouncement(announcement.id)}
-              aria-label={`Delete ${announcement.title}`}
+          return (
+            <article
+              className={`announcement ${
+                isSafety ? "safety-card" : "information-card"
+              }`}
+              key={announcement.id}
             >
-              Delete
-            </button>
-          </article>
-        ))}
+              {isSafety ? (
+                <div className="safety-visual">
+                  <div className="safety-backdrop" aria-hidden="true" />
+
+                  <img
+                    src="/safety-notice.gif"
+                    alt="Safety starts with you. Please wear your employee identification badge."
+                    className="safety-gif"
+                  />
+                </div>
+              ) : (
+                <div className="announcement-content">
+                  <span className="announcement-label">
+                    {announcement.category}
+                  </span>
+
+                  <h2>{announcement.title}</h2>
+
+                  <p>{announcement.message}</p>
+
+                  <div className="announcement-footer">
+                    <span>Company Information</span>
+                    <span>● Official Notice</span>
+                  </div>
+                </div>
+              )}
+
+              <button
+                className="delete-button"
+                type="button"
+                onClick={() => handleDeleteAnnouncement(announcement.id)}
+                aria-label={`Delete ${announcement.title}`}
+              >
+                Delete
+              </button>
+            </article>
+          );
+        })}
       </section>
 
-      {/* Weather */}
+      {/* WEATHER PANEL */}
       <section className="weather-card">
-        <div className="weather-details">
-          <p className="weather-location">SACRAMENTO, CALIFORNIA</p>
-          <h2>Current Weather</h2>
+        <div className="weather-left">
+          <span className="eyebrow">LOCAL WEATHER</span>
+
+          <h2>Sacramento, California</h2>
 
           {weatherError && (
-            <p>Weather is temporarily unavailable. Please try again later.</p>
+            <p className="weather-error">Weather temporarily unavailable.</p>
           )}
 
-          {!weather && !weatherError && <p>Loading weather...</p>}
+          {!weather && !weatherError && <p>Loading weather information...</p>}
 
           {weather && (
             <>
@@ -263,49 +310,76 @@ function App() {
                 {getWeatherDescription(weather.current.weather_code)}
               </p>
 
-              <p className="weather-temperature">
-                {Math.round(weather.current.temperature_2m)}°F
-                <span>
-                  {" "}
-                  Feels like {Math.round(weather.current.apparent_temperature)}
-                  °F
-                </span>
+              <div className="temperature">
+                {Math.round(weather.current.temperature_2m)}
+                <span>°F</span>
+              </div>
+
+              <p className="feels-like">
+                Feels like {Math.round(weather.current.apparent_temperature)}°F
               </p>
 
-              <p>
-                High: {Math.round(weather.daily.temperature_2m_max[0])}°F
-                {" · "}
-                Low: {Math.round(weather.daily.temperature_2m_min[0])}°F
-              </p>
+              <div className="weather-extra">
+                <div>
+                  <span>↑</span>
+                  High {Math.round(weather.daily.temperature_2m_max[0])}°F
+                </div>
 
-              <p>
-                💧 Humidity: {weather.current.relative_humidity_2m}%{" · "}
-                💨 Wind: {Math.round(weather.current.wind_speed_10m)} mph
-              </p>
+                <div>
+                  <span>↓</span>
+                  Low {Math.round(weather.daily.temperature_2m_min[0])}°F
+                </div>
 
-              <p className="weather-credit">Weather data by Open-Meteo.com</p>
+                <div>💧 {weather.current.relative_humidity_2m}%</div>
+
+                <div>💨 {Math.round(weather.current.wind_speed_10m)} mph</div>
+              </div>
+
+              <p className="weather-credit">
+                Weather data provided by Open-Meteo
+              </p>
             </>
           )}
         </div>
 
         {weather && (
-          <div className="weather-icon" aria-hidden="true">
-            {getWeatherIcon(
-              weather.current.weather_code,
-              weather.current.is_day
-            )}
+          <div className="weather-visual">
+            <span className="weather-icon">
+              {getWeatherIcon(
+                weather.current.weather_code,
+                weather.current.is_day,
+              )}
+            </span>
           </div>
         )}
       </section>
 
-      {/* Bottom message */}
+      {/* NEWS TICKER */}
       <footer className="ticker">
-        <strong>ANNOUNCEMENT</strong>
-        <p>
-          Welcome! Please check this screen regularly for important company
-          updates.
-        </p>
+        <div className="ticker-label">LIVE UPDATES</div>
+
+        <div className="ticker-window">
+          <div className="ticker-track">
+            <span>
+              Welcome to our information center. Please wear your identification
+              badge at all times. Safety starts with you. Stay informed and stay
+              safe.
+            </span>
+
+            <span aria-hidden="true">
+              Welcome to our information center. Please wear your identification
+              badge at all times. Safety starts with you. Stay informed and stay
+              safe.
+            </span>
+          </div>
+        </div>
       </footer>
+
+      <div className="bottom-note">
+        SMART DISPLAY SYSTEM
+        <span>•</span>
+        INFORMATION AND SAFETY
+      </div>
     </main>
   );
 }
