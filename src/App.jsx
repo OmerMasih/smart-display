@@ -378,7 +378,7 @@ function App() {
       <div className="bottom-note">
         SMART DISPLAY SYSTEM
         <span>•</span>
-        INFORMATION AND SAFETY
+        INFORMATION AND SAFETY <span>•</span> OMER &copy; Nov 01, 2026
       </div>
     </main>
   );
